@@ -1,5 +1,4 @@
 import { jobTypes } from "@/lib/job-types";
-import prisma from "@/lib/prisma";
 import { JobFilterValues, jobFilterSchema } from "@/lib/validation";
 import { redirect } from "next/navigation";
 import FormSubmitButton from "./FormSubmitButton";
@@ -28,9 +27,13 @@ interface JobFilterSidebarProps {
   defaultValues: JobFilterValues;
 }
 
+
 export default async function JobFilterSidebar({
   defaultValues,
 }: JobFilterSidebarProps) {
+  
+  const distinctLocations = ['d','d','d']
+  /*
   const distinctLocations = (await prisma.job
     .findMany({
       where: { approved: true },
@@ -40,7 +43,7 @@ export default async function JobFilterSidebar({
     .then((locations) =>
       locations.map(({ location }) => location).filter(Boolean),
     )) as string[];
-
+*/
   return (
     <aside className="sticky top-0 h-fit rounded-lg border bg-background p-4 md:w-[260px]">
       <form action={filterJobs} key={JSON.stringify(defaultValues)}>
@@ -83,16 +86,6 @@ export default async function JobFilterSidebar({
                 </option>
               ))}
             </Select>
-          </div>
-          <div className="flex items-center gap-2">
-            <input
-              id="remote"
-              name="remote"
-              type="checkbox"
-              className="scale-125 accent-black"
-              defaultChecked={defaultValues.remote}
-            />
-            <Label htmlFor="remote">Remote jobs</Label>
           </div>
           <FormSubmitButton className="w-full">Filter jobs</FormSubmitButton>
         </div>
