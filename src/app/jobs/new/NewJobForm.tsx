@@ -1,8 +1,11 @@
 "use client";
 
-import LoadingButton from "@/components/LoadingButton";
-import LocationInput from "@/components/LocationInput";
-import RichTextEditor from "@/components/RichTextEditor";
+import { X } from "lucide-react";
+import { useForm } from "react-hook-form";
+//A tool for converting Draft.js raw object to markdown, and vice-versa.
+import { draftToMarkdown } from "markdown-draft-js";
+import { zodResolver } from "@hookform/resolvers/zod";
+
 import {
   Form,
   FormControl,
@@ -12,15 +15,15 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import H1 from "@/components/ui/h1";
+import Select from "@/components/ui/select";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import Select from "@/components/ui/select";
+import LoadingButton from "@/components/LoadingButton";
+import LocationInput from "@/components/LocationInput";
+import RichTextEditor from "@/components/RichTextEditor";
 import { jobTypes, locationTypes } from "@/lib/job-types";
 import { CreateJobValues, createJobSchema } from "@/lib/validation";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { X } from "lucide-react";
-import { draftToMarkdown } from "markdown-draft-js";
-import { useForm } from "react-hook-form";
+
 
 export default function NewJobForm() {
   const form = useForm<CreateJobValues>({
@@ -47,7 +50,8 @@ export default function NewJobForm() {
     });
 
     try {
-     console.log("creating post succesffull")
+      // await createJobPosting(formData);
+      console.log("creating post succesffull");
     } catch (error) {
       alert("Something went wrong, please try again.");
     }
@@ -89,6 +93,19 @@ export default function NewJobForm() {
             />
             <FormField
               control={control}
+              name="role"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Job role</FormLabel>
+                  <FormControl>
+                    <Input placeholder="e.g. product engineer" {...field} />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <FormField
+              control={control}
               name="type"
               render={({ field }) => (
                 <FormItem>
@@ -117,27 +134,6 @@ export default function NewJobForm() {
                   <FormLabel>Company</FormLabel>
                   <FormControl>
                     <Input {...field} />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-            <FormField
-              control={control}
-              name="companyLogo"
-              render={({ field: { value, ...fieldValues } }) => (
-                <FormItem>
-                  <FormLabel>Company logo</FormLabel>
-                  <FormControl>
-                    <Input
-                      {...fieldValues}
-                      type="file"
-                      accept="image/*"
-                      onChange={(e) => {
-                        const file = e.target.files?.[0];
-                        fieldValues.onChange(file);
-                      }}
-                    />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -203,51 +199,6 @@ export default function NewJobForm() {
                 </FormItem>
               )}
             />
-            <div className="space-y-2">
-              <Label htmlFor="applicationEmail">How to apply</Label>
-              <div className="flex justify-between">
-                <FormField
-                  control={control}
-                  name="applicationEmail"
-                  render={({ field }) => (
-                    <FormItem className="grow">
-                      <FormControl>
-                        <div className="flex items-center">
-                          <Input
-                            id="applicationEmail"
-                            placeholder="Email"
-                            type="email"
-                            {...field}
-                          />
-                          <span className="mx-2">or</span>
-                        </div>
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-                <FormField
-                  control={control}
-                  name="applicationUrl"
-                  render={({ field }) => (
-                    <FormItem className="grow">
-                      <FormControl>
-                        <Input
-                          placeholder="Website"
-                          type="url"
-                          {...field}
-                          onChange={(e) => {
-                            field.onChange(e);
-                            trigger("applicationEmail");
-                          }}
-                        />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-              </div>
-            </div>
             <FormField
               control={control}
               name="description"
