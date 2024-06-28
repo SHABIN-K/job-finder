@@ -1,12 +1,22 @@
 import { formatMoney } from "@/lib/utils";
-import { Job } from "@prisma/client";
 import { Banknote, Briefcase, Globe2, MapPin } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import Markdown from "./Markdown";
 
 interface JobPageProps {
-  job: Job;
+  job: {
+    title: string;
+    description: string;
+    companyName: string;
+    applicationUrl: string;
+    type: string;
+    locationType: string;
+    location: string;
+    salary: number;
+    companyLogoUrl: string;
+    createdAt: Date;
+  };
 }
 
 export default function JobPage({

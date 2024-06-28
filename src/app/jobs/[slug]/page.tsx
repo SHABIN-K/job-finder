@@ -1,16 +1,15 @@
 import JobPage from "@/components/JobPage";
 import { Button } from "@/components/ui/button";
-import prisma from "@/lib/prisma";
-import { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { cache } from "react";
 
 interface PageProps {
   params: { slug: string };
 }
+/* 
 
 const getJob = cache(async (slug: string) => {
-  const job = await prisma.job.findUnique({
+  const job = await db.job.findUnique({
     where: { slug },
   });
 
@@ -18,30 +17,31 @@ const getJob = cache(async (slug: string) => {
 
   return job;
 });
-
-export async function generateStaticParams() {
-  const jobs = await prisma.job.findMany({
-    where: { approved: true },
-    select: { slug: true },
-  });
-
-  return jobs.map(({ slug }) => slug);
-}
-
-export async function generateMetadata({
-  params: { slug },
-}: PageProps): Promise<Metadata> {
-  const job = await getJob(slug);
-
-  return {
-    title: job.title,
-  };
-}
+ */
 
 export default async function Page({ params: { slug } }: PageProps) {
-  const job = await getJob(slug);
+  //const job = await getJob(slug);
+  const job = [
+    {
+      id: "dasfafasdfdsfsadfsadfasf",
+      slug: "full-stack-developer",
+      title: "full stack developer",
+      type: "/log.dng",
+      locationType: "/log.dng",
+      location: "/log.dng",
+      description: "/log.dng",
+      salary: "/log.dng",
+      companyName: "/log.dng",
+      applicationEmail: "/log.dng",
+      applicationUrl: "/log.dng",
+      companyLogoUrl: "/log.dng",
+      approved: true,
+      createdAt: "2023-12-19T13:37:35.608+00:00",
+      updatedAt: "2023-12-19T13:37:35.608+00:00",
+    },
+  ];
 
-  const { applicationEmail, applicationUrl } = job;
+  const { applicationEmail, applicationUrl } = job[0];
 
   const applicationLink = applicationEmail
     ? `mailto:${applicationEmail}`

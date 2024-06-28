@@ -1,12 +1,20 @@
 import companyLogoPlaceholder from "@/assets/company-logo-placeholder.png";
 import { formatMoney, relativeDate } from "@/lib/utils";
-import { Job } from "@prisma/client";
 import { Banknote, Briefcase, Clock, Globe2, MapPin } from "lucide-react";
 import Image from "next/image";
 import Badge from "./Badge";
 
 interface JobListItemProps {
-  job: Job;
+  job: {
+    title: string;
+    companyName: string;
+    type: string;
+    locationType: string;
+    location: string;
+    salary: number;
+    companyLogoUrl: string;
+    createdAt: Date;
+  };
 }
 
 export default function JobListItem({
@@ -24,7 +32,7 @@ export default function JobListItem({
   return (
     <article className="flex gap-3 rounded-lg border p-5 hover:bg-muted/60">
       <Image
-        src={companyLogoUrl || companyLogoPlaceholder}
+        src={companyLogoPlaceholder}
         alt={`${companyName} logo`}
         width={100}
         height={100}
