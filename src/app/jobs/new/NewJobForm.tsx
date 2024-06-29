@@ -2,7 +2,6 @@
 
 import { X } from "lucide-react";
 import { useForm } from "react-hook-form";
-//A tool for converting Draft.js raw object to markdown, and vice-versa.
 import { draftToMarkdown } from "markdown-draft-js";
 import { zodResolver } from "@hookform/resolvers/zod";
 
@@ -20,10 +19,10 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import LoadingButton from "@/components/LoadingButton";
 import LocationInput from "@/components/LocationInput";
+import { createJobPosting } from "@/actions/createPost";
 import RichTextEditor from "@/components/RichTextEditor";
 import { jobTypes, locationTypes } from "@/lib/job-types";
 import { CreateJobValues, createJobSchema } from "@/lib/validation";
-
 
 export default function NewJobForm() {
   const form = useForm<CreateJobValues>({
@@ -50,8 +49,7 @@ export default function NewJobForm() {
     });
 
     try {
-      // await createJobPosting(formData);
-      console.log("creating post succesffull");
+       await createJobPosting(formData);
     } catch (error) {
       alert("Something went wrong, please try again.");
     }

@@ -9,6 +9,7 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@apollo/client": "^3.10.8",
     "@clerk/nextjs": "^5.1.6",
     "@hookform/resolvers": "^3.3.3",
     "@radix-ui/react-label": "^2.0.2",
@@ -16,6 +17,7 @@
     "class-variance-authority": "^0.7.0",
     "clsx": "^2.1.0",
     "date-fns": "^3.0.6",
+    "graphql": "^16.9.0",
     "lucide-react": "^0.303.0",
     "markdown-draft-js": "^2.4.0",
     "nanoid": "^5.0.4",
