@@ -1,14 +1,19 @@
+"use client";
+
 import Link from "next/link";
 import Image from "next/image";
-import { SignOutButton } from "@clerk/nextjs";
-import { BadgePlus, LogOut } from "lucide-react";
-import { currentUser } from "@clerk/nextjs/server";
+import { useClerk } from "@clerk/nextjs";
+import { usePathname } from "next/navigation";
+import { BadgePlus, LayoutDashboard, LogOut } from "lucide-react";
 
 import logo from "@/assets/logo.ico";
 import { Button } from "./ui/button";
+import { useRouter } from "next/navigation";
 
-export default async function Navbar() {
-  const user = await currentUser();
+export default function Navbar() {
+  const { user, signOut } = useClerk();
+  const router = useRouter();
+  const pathname = usePathname();
 
   return (
     <header className="shadow-sm">
@@ -18,27 +23,53 @@ export default async function Navbar() {
           <span className="text-xl font-bold tracking-tight">Horecah Jobs</span>
         </Link>
         <div className="hidden flex-row space-x-1 md:flex">
-          <Button asChild>
-            <Link href="/jobs/new">Post a job</Link>
-          </Button>
+          {pathname === "/" ? (
+            <Button asChild>
+              <Link href="/jobs">Manage</Link>
+            </Button>
+          ) : (
+            <Button asChild>
+              <Link href="/jobs/new">Add job</Link>
+            </Button>
+          )}
           {user && (
-            <SignOutButton>
-              <Button>log out</Button>
-            </SignOutButton>
+            <Button>
+              <div
+                onClick={async () => {
+                  await signOut();
+                  router.push("/");
+                }}
+              >
+                log out
+              </div>
+            </Button>
           )}
         </div>
         <div className="flex flex-row space-x-1 md:hidden">
-          <Button className="rounded-full">
-            <Link href="/jobs/new">
-              <BadgePlus size={20} />
-            </Link>
-          </Button>
+          {pathname === "/" ? (
+            <Button className="rounded-full">
+              <Link href="/jobs">
+                <LayoutDashboard size={20} />
+              </Link>
+            </Button>
+          ) : (
+            <Button className="rounded-full">
+              <Link href="/jobs/new">
+                <BadgePlus size={20} />
+              </Link>
+            </Button>
+          )}
           {user && (
-            <SignOutButton>
-              <Button className="rounded-full">
+            <Button className="rounded-full">
+              <div
+                onClick={async () => {
+                  await signOut();
+                  router.push("/");
+                }}
+              >
                 <LogOut size={20} />
-              </Button>
-            </SignOutButton>
+              </div>
+            </Button>
           )}
         </div>
       </nav>

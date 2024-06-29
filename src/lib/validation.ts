@@ -21,7 +21,7 @@ const locationSchema = z
     },
   );
 
-  //creating jobs schema
+//creating jobs schema
 export const createJobSchema = z
   .object({
     title: requiredString.max(100),
@@ -39,15 +39,12 @@ export const createJobSchema = z
   })
   .and(locationSchema);
 
-
-  //filtering job schema
+//filtering job schema
 export const jobFilterSchema = z.object({
   q: z.string().optional(),
   type: z.string().optional(),
-  location: z.string().optional(),
-  remote: z.coerce.boolean().optional(),
+  salary: z.string().optional(),
 });
-
 
 export type CreateJobValues = z.infer<typeof createJobSchema>;
 export type JobFilterValues = z.infer<typeof jobFilterSchema>;

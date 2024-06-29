@@ -1,8 +1,9 @@
-import companyLogoPlaceholder from "@/assets/company-logo-placeholder.png";
-import { formatMoney, relativeDate } from "@/lib/utils";
-import { Banknote, Briefcase, Clock, Globe2, MapPin } from "lucide-react";
 import Image from "next/image";
+import { Banknote, Briefcase, Clock, Globe2, MapPin } from "lucide-react";
+
 import Badge from "./Badge";
+import { formatMoney, relativeDate } from "@/lib/utils";
+import companyLogoPlaceholder from "@/assets/company-logo-placeholder.png";
 
 interface JobListItemProps {
   job: {
@@ -12,23 +13,14 @@ interface JobListItemProps {
     locationType: string;
     location: string;
     salary: number;
-    companyLogoUrl: string;
-    createdAt: Date;
+    created_At: string;
   };
 }
 
 export default function JobListItem({
-  job: {
-    title,
-    companyName,
-    type,
-    locationType,
-    location,
-    salary,
-    companyLogoUrl,
-    createdAt,
-  },
+  job: { title, companyName, type, locationType, location, salary, created_At },
 }: JobListItemProps) {
+  console.log(created_At);
   return (
     <article className="flex gap-3 rounded-lg border p-5 hover:bg-muted/60">
       <Image
@@ -62,7 +54,7 @@ export default function JobListItem({
           </p>
           <p className="flex items-center gap-1.5 sm:hidden">
             <Clock size={16} className="shrink-0" />
-            {relativeDate(createdAt)}
+            {relativeDate(created_At)}
           </p>
         </div>
       </div>
@@ -70,7 +62,7 @@ export default function JobListItem({
         <Badge>{type}</Badge>
         <span className="flex items-center gap-1.5 text-muted-foreground">
           <Clock size={16} />
-          {relativeDate(createdAt)}
+          {relativeDate(created_At)}
         </span>
       </div>
     </article>

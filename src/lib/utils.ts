@@ -13,7 +13,7 @@ export function formatMoney(amount: number) {
   }).format(amount);
 }
 
-export function relativeDate(from: Date) {
+export function relativeDate(from: string) {
   return formatDistanceToNowStrict(from, { addSuffix: true });
 }
 

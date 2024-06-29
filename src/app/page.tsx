@@ -7,16 +7,16 @@ interface PageProps {
   searchParams: {
     q?: string;
     type?: string;
-    location?: string;
+    salary?: string;
   };
 }
 export default async function Home({
-  searchParams: { q, type, location },
+  searchParams: { q, type, salary },
 }: PageProps) {
   const filterValues: JobFilterValues = {
     q,
     type,
-    location,
+    salary,
   };
 
   return (
@@ -30,9 +30,7 @@ export default async function Home({
       </div>
       <section className="flex flex-col gap-4 md:flex-row">
         <JobFilterSidebar defaultValues={filterValues} />
-        <JobResults
-          filterValues={filterValues}
-        />
+        <JobResults filterValues={filterValues} />
       </section>
     </main>
   );

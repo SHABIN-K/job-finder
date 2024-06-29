@@ -15,7 +15,7 @@ interface JobPageProps {
     location: string;
     salary: number;
     companyLogoUrl: string;
-    createdAt: Date;
+    created_At: string;
   };
 }
 
