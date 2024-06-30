@@ -2,21 +2,41 @@
 
 import Link from "next/link";
 import Image from "next/image";
+import { useState } from "react";
 import { useClerk } from "@clerk/nextjs";
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import { BadgePlus, LayoutDashboard, LogOut } from "lucide-react";
 
+import AlertBox from "./AlertBox";
 import logo from "@/assets/logo.ico";
 import { Button } from "./ui/button";
-import { useRouter } from "next/navigation";
 
 export default function Navbar() {
+  const [isAlertOpen, setAlertOpen] = useState<boolean>(false);
   const { user, signOut } = useClerk();
   const router = useRouter();
   const pathname = usePathname();
 
+  const handleLogOut = async () => {
+    try {
+      await signOut();
+      router.push("/");
+    } catch (error) {
+      console.error("Error signing out:", error);
+    }
+  };
+
   return (
     <header className="shadow-sm">
+      {isAlertOpen && (
+        <AlertBox
+          open={isAlertOpen}
+          onOpenChange={setAlertOpen}
+          onConfirm={handleLogOut}
+          onCancel={() => setAlertOpen(false)}
+          desc="This action will log you out from your account."
+        />
+      )}
       <nav className="m-auto flex max-w-5xl items-center justify-between px-3 py-5">
         <Link href="/" className="flex items-center gap-3">
           <Image src={logo} width={40} height={40} alt="Flow Jobs logo" />
@@ -34,14 +54,7 @@ export default function Navbar() {
           )}
           {user && (
             <Button>
-              <div
-                onClick={async () => {
-                  await signOut();
-                  router.push("/");
-                }}
-              >
-                log out
-              </div>
+              <div onClick={() => setAlertOpen(true)}>log out</div>
             </Button>
           )}
         </div>
@@ -61,12 +74,7 @@ export default function Navbar() {
           )}
           {user && (
             <Button className="rounded-full">
-              <div
-                onClick={async () => {
-                  await signOut();
-                  router.push("/");
-                }}
-              >
+              <div onClick={() => setAlertOpen(true)}>
                 <LogOut size={20} />
               </div>
             </Button>
