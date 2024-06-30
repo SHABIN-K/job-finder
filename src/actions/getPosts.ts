@@ -1,7 +1,6 @@
 import client from "@/config/api";
 import { JobFilterValues } from "@/lib/validation";
 
-import { cache } from "react";
 import { gql } from "@apollo/client";
 
 const JOB_FIELDS = gql`
@@ -52,7 +51,7 @@ export const GET_USER_JOBS_QUERY = gql`
   ${JOB_FIELDS}
 `;
 
-export const getUserPosts = cache(async ({ user_Id }: { user_Id: string }) => {
+export const getUserPosts = async ({ user_Id }: { user_Id: string }) => {
   try {
     const { data } = await client.query({
       query: GET_USER_JOBS_QUERY,
@@ -64,9 +63,9 @@ export const getUserPosts = cache(async ({ user_Id }: { user_Id: string }) => {
     console.error("Error fetching job post:", error);
     return [];
   }
-});
+};
 
-export const getJob = cache(async (slug: string) => {
+export const getJob = async (slug: string) => {
   try {
     const { data } = await client.query({
       query: GET_JOB_QUERY,
@@ -78,7 +77,7 @@ export const getJob = cache(async (slug: string) => {
     console.error("Error fetching job post:", error);
     return [];
   }
-});
+};
 
 export async function getJobPosts({
   filterValues,

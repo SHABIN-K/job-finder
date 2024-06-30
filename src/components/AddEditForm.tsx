@@ -17,6 +17,7 @@ import { PostProps } from "@/types";
 import Select from "@/components/ui/select";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { editPost } from "@/actions/editPost";
 import LoadingButton from "@/components/LoadingButton";
 import LocationInput from "@/components/LocationInput";
 import { createJobPosting } from "@/actions/createPost";
@@ -65,8 +66,12 @@ const AddEditForm: React.FC<AddEditPostProps> = ({ data }) => {
     });
 
     try {
-      await createJobPosting(formData);
-      alert("Job posting created/updated successfully!");
+      if (data) {
+        await editPost(formData, data.id);
+      } else {
+        await createJobPosting(formData);
+      }
+     window.location.href ="/jobs"
     } catch (error) {
       alert("Something went wrong, please try again.");
     }
@@ -206,7 +211,6 @@ const AddEditForm: React.FC<AddEditPostProps> = ({ data }) => {
                 <RichTextEditor
                   onChange={(draft) => field.onChange(draftToMarkdown(draft))}
                   ref={field.ref}
-                  initialValue={data?.description || ""}
                 />
               </FormControl>
               <FormMessage />
