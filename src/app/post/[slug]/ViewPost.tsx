@@ -8,6 +8,7 @@ import JobPage from "@/components/JobPage";
 import AlertBox from "@/components/AlertBox";
 import { Button } from "@/components/ui/button";
 import { deletePost } from "@/actions/deletePost";
+import Link from "next/link";
 
 interface ViewPostProps {
   userId?: string;
@@ -58,9 +59,12 @@ const ViewPost: React.FC<ViewPostProps> = ({ userId = "", job }) => {
           {userId === job.user_id && (
             <div className="flex w-full justify-end space-x-2">
               <Button asChild className="w-14 md:w-full">
-                <a className="w-40 md:w-fit ">
+                <Link
+                  href={`/jobs/${job.slug}/edit`}
+                  className="w-40 md:w-fit "
+                >
                   Edit <span className="ml-1 hidden md:block">Post</span>
-                </a>
+                </Link>
               </Button>
               <Button
                 asChild
