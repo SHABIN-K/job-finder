@@ -10,7 +10,7 @@ import {
 } from "./ui/alert-dialog";
 
 interface AlertBoxProps {
-  onConfirm: () => void;
+  onConfirm: (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => void;
   onCancel: () => void;
   open: boolean;
   onOpenChange: (open: boolean) => void;

@@ -7,6 +7,7 @@ import { PostProps } from "@/types";
 import JobPage from "@/components/JobPage";
 import AlertBox from "@/components/AlertBox";
 import { Button } from "@/components/ui/button";
+import { deletePost } from "@/actions/deletePost";
 
 interface ViewPostProps {
   userId?: string;
@@ -17,16 +18,22 @@ const ViewPost: React.FC<ViewPostProps> = ({ userId = "", job }) => {
   const router = useRouter();
   const [isAlertOpen, setAlertOpen] = useState<boolean>(false);
 
-  const handleDelete = async () => {
-    if (job.user_id === userId) {
+  const handleDelete = async (event: { preventDefault: () => void }) => {
+    event.preventDefault();
+    if (job.user_id === userId && job.id) {
       try {
-        console.log(job);
+        await deletePost(parseInt(job.id));
+        router.push("/jobs");
       } catch (error) {
         console.error("Error deleting job:", error);
+      } finally {
+        setAlertOpen(false);
       }
+    } else {
+      console.error("Job ID is undefined or user is not authorized");
     }
-    console.log("hello");
   };
+
   return (
     <>
       {isAlertOpen && (

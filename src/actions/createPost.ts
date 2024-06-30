@@ -11,7 +11,7 @@ import { createJobSchema } from "@/lib/validation";
 import { FormDataValues } from "@/types";
 
 const CREATE_POST_MUTATION = gql`
-  mutation createPost($object: post_insert_input!) {
+  mutation CREATE_POST($object: post_insert_input!) {
     insert_post_one(object: $object) {
       user_id
       slug

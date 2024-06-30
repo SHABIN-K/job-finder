@@ -23,7 +23,7 @@ const JOB_FIELDS = gql`
 `;
 
 export const GET_JOBS_QUERY = gql`
-  query Get_posts($where: post_bool_exp!) {
+  query GET_POSTS($where: post_bool_exp!) {
     post(where: $where, order_by: { created_At: desc }) {
       ...JobFields
     }
@@ -32,7 +32,7 @@ export const GET_JOBS_QUERY = gql`
 `;
 
 export const GET_JOB_QUERY = gql`
-  query Get_post($slug: String!) {
+  query GET_POST($slug: String!) {
     post(where: { slug: { _eq: $slug } }) {
       ...JobFields
     }
@@ -41,7 +41,7 @@ export const GET_JOB_QUERY = gql`
 `;
 
 export const GET_USER_JOBS_QUERY = gql`
-  query Get_post($user_Id: String!) {
+  query GET_USER_POSTS($user_Id: String!) {
     post(
       where: { user_id: { _eq: $user_Id } }
       order_by: { created_At: desc }

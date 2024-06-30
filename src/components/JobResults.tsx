@@ -31,11 +31,7 @@ export default async function JobResults({
   }
 
   return (
-    <div
-      className={` ${
-        user_Id && jobs.length > 0 ? "grid grid-cols-2 gap-3" : "grow space-y-4"
-      }`}
-    >
+    <div className="grow space-y-4">
       {jobs.length > 0 ? (
         jobs.map((job) => (
           <Link key={job.id} href={`/post/${job.slug}`} className="block">
