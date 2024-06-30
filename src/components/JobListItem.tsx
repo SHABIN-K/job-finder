@@ -2,19 +2,12 @@ import Image from "next/image";
 import { Banknote, Briefcase, Clock, Globe2, MapPin } from "lucide-react";
 
 import Badge from "./Badge";
+import { PostProps } from "@/types";
 import { formatMoney, relativeDate } from "@/lib/utils";
 import companyLogoPlaceholder from "@/assets/company-logo-placeholder.png";
 
 interface JobListItemProps {
-  job: {
-    title: string;
-    companyName: string;
-    type: string;
-    locationType: string;
-    location: string;
-    salary: number;
-    created_At: string;
-  };
+  job: PostProps;
 }
 
 export default function JobListItem({
@@ -49,7 +42,7 @@ export default function JobListItem({
           </p>
           <p className="flex items-center gap-1.5">
             <Banknote size={16} className="shrink-0" />
-            {formatMoney(salary)}
+            {formatMoney(parseInt(salary))}
           </p>
           <p className="flex items-center gap-1.5 sm:hidden">
             <Clock size={16} className="shrink-0" />

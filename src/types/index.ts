@@ -10,8 +10,8 @@ export interface PostProps {
   location: string;
   description?: string;
   salary: string;
-  created_At?: string;
-  updated_At?: string;
+  created_At: string;
+  updated_At: string;
 }
 
 export type FormDataValues = Omit<

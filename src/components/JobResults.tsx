@@ -1,15 +1,25 @@
 import Link from "next/link";
 
 import JobListItem from "./JobListItem";
-import { getJobPosts } from "@/actions/getPosts";
 import { JobFilterValues } from "@/lib/validation";
+import { getJobPosts, getUserPosts } from "@/actions/getPosts";
 
 interface JobResultsProps {
-  filterValues: JobFilterValues;
+  filterValues?: JobFilterValues;
+  user_Id?: string;
 }
 
-export default async function JobResults({ filterValues }: JobResultsProps) {
-  const jobs = await getJobPosts({ filterValues });
+export default async function JobResults({
+  filterValues = {},
+  user_Id,
+}: JobResultsProps) {
+  let jobs: any[] = [];
+
+  if (user_Id) {
+    jobs = await getUserPosts({ user_Id });
+  } else {
+    jobs = await getJobPosts({ filterValues });
+  }
 
   if (!Array.isArray(jobs)) {
     console.error("Unexpected response format for jobs:", jobs);
@@ -21,7 +31,9 @@ export default async function JobResults({ filterValues }: JobResultsProps) {
   }
 
   return (
-    <div className="grow space-y-4">
+    <div
+      className={` ${user_Id ? "grid grid-cols-2 gap-3" : "grow space-y-4"}`}
+    >
       {jobs.length > 0 ? (
         jobs.map((job) => (
           <Link key={job.id} href={`/post/${job.slug}`} className="block">

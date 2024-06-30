@@ -40,6 +40,46 @@ export const GET_JOB_QUERY = gql`
   ${JOB_FIELDS}
 `;
 
+export const GET_USER_JOBS_QUERY = gql`
+  query Get_post($user_Id: String!) {
+    post(
+      where: { user_id: { _eq: $user_Id } }
+      order_by: { created_At: desc }
+    ) {
+      ...JobFields
+    }
+  }
+  ${JOB_FIELDS}
+`;
+
+export const getUserPosts = cache(async ({ user_Id }: { user_Id: string }) => {
+  try {
+    const { data } = await client.query({
+      query: GET_USER_JOBS_QUERY,
+      variables: { user_Id },
+    });
+
+    return data.post || [];
+  } catch (error) {
+    console.error("Error fetching job post:", error);
+    return [];
+  }
+});
+
+export const getJob = cache(async (slug: string) => {
+  try {
+    const { data } = await client.query({
+      query: GET_JOB_QUERY,
+      variables: { slug },
+    });
+
+    return data.post[0] || [];
+  } catch (error) {
+    console.error("Error fetching job post:", error);
+    return [];
+  }
+});
+
 export async function getJobPosts({
   filterValues,
 }: {
@@ -85,17 +125,3 @@ export async function getJobPosts({
     return [];
   }
 }
-
-export const getJob = cache(async (slug: string) => {
-  try {
-    const { data } = await client.query({
-      query: GET_JOB_QUERY,
-      variables: { slug },
-    });
-
-    return data.post[0] || [];
-  } catch (error) {
-    console.error("Error fetching job post:", error);
-    return [];
-  }
-});
