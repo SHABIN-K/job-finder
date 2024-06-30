@@ -86,18 +86,15 @@ export async function getJobPosts({
 }) {
   const { q, type, salary } = filterValues;
 
-  const searchString = q
-    ?.split(" ")
-    .filter((word) => word.length > 0)
-    .join(" & ");
+  const searchWords = q?.split(" ").filter((word) => word.length > 0);
 
-  const searchFilter = searchString
+  const searchFilter = q
     ? {
         _or: [
-          { title: { _ilike: `%${searchString}%` } },
-          { companyName: { _ilike: `%${searchString}%` } },
-          { type: { _ilike: `%${searchString}%` } },
-          { role: { _ilike: `%${searchString}%` } },
+          { title: { _ilike: `%${q}%` } },
+          { companyName: { _ilike: `%${q}%` } },
+          { type: { _ilike: `%${q}%` } },
+          { role: { _ilike: `%${q}%` } },
         ],
       }
     : {};
@@ -105,8 +102,10 @@ export async function getJobPosts({
   const where = {
     _and: [
       searchFilter,
-      type ? { type: { _eq: type } } : {},
-      salary ? { salary: { _lte: parseInt(salary) } } : {},
+      type ? { type: { _eq: type } } : { type: { _is_null: false } },
+      salary
+        ? { salary: { _lte: parseInt(salary) } }
+        : { salary: { _is_null: false } },
     ],
   };
 
