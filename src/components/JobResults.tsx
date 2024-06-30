@@ -1,7 +1,7 @@
 import Link from "next/link";
 
 import JobListItem from "./JobListItem";
-import getJobPosts from "@/actions/getPosts";
+import { getJobPosts } from "@/actions/getPosts";
 import { JobFilterValues } from "@/lib/validation";
 
 interface JobResultsProps {
@@ -24,7 +24,7 @@ export default async function JobResults({ filterValues }: JobResultsProps) {
     <div className="grow space-y-4">
       {jobs.length > 0 ? (
         jobs.map((job) => (
-          <Link key={job.id} href={`/jobs/${job.slug}`} className="block">
+          <Link key={job.id} href={`/post/${job.slug}`} className="block">
             <JobListItem job={job} />
           </Link>
         ))

@@ -1,26 +1,46 @@
 import client from "@/config/api";
 import { JobFilterValues } from "@/lib/validation";
+
+import { cache } from "react";
 import { gql } from "@apollo/client";
 
-const GET_JOBS_QUERY = gql`
-  query GetJobs($where: post_bool_exp!) {
-    post(where: $where, order_by: { created_At: desc }) {
-      id
-      user_id
-      slug
-      title
-      type
-      locationType
-      location
-      description
-      salary
-      companyName
-      created_At
-      updated_At
-    }
+const JOB_FIELDS = gql`
+  fragment JobFields on post {
+    id
+    user_id
+    slug
+    role
+    title
+    type
+    locationType
+    location
+    description
+    salary
+    companyName
+    created_At
+    updated_At
   }
 `;
-export default async function getJobPosts({
+
+export const GET_JOBS_QUERY = gql`
+  query Get_posts($where: post_bool_exp!) {
+    post(where: $where, order_by: { created_At: desc }) {
+      ...JobFields
+    }
+  }
+  ${JOB_FIELDS}
+`;
+
+export const GET_JOB_QUERY = gql`
+  query Get_post($slug: String!) {
+    post(where: { slug: { _eq: $slug } }) {
+      ...JobFields
+    }
+  }
+  ${JOB_FIELDS}
+`;
+
+export async function getJobPosts({
   filterValues,
 }: {
   filterValues: JobFilterValues;
@@ -62,6 +82,20 @@ export default async function getJobPosts({
     return data.post || [];
   } catch (error) {
     console.error("Error fetching job posts:", error);
-    return []; 
+    return [];
   }
 }
+
+export const getJob = cache(async (slug: string) => {
+  try {
+    const { data } = await client.query({
+      query: GET_JOB_QUERY,
+      variables: { slug },
+    });
+
+    return data.post[0] || [];
+  } catch (error) {
+    console.error("Error fetching job post:", error);
+    return [];
+  }
+});

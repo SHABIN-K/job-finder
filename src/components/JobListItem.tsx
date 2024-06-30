@@ -20,7 +20,6 @@ interface JobListItemProps {
 export default function JobListItem({
   job: { title, companyName, type, locationType, location, salary, created_At },
 }: JobListItemProps) {
-  console.log(created_At);
   return (
     <article className="flex gap-3 rounded-lg border p-5 hover:bg-muted/60">
       <Image

@@ -13,7 +13,6 @@ async function filterJobs(formData: FormData) {
   const values = Object.fromEntries(formData.entries());
 
   const { q, type, salary } = jobFilterSchema.parse(values);
-  console.log(salary);
   const searchParams = new URLSearchParams();
   if (q) searchParams.append("q", q.trim());
   if (type) searchParams.append("type", type);
