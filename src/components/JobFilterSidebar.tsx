@@ -12,11 +12,12 @@ async function filterJobs(formData: FormData) {
 
   const values = Object.fromEntries(formData.entries());
 
-  const { q, type, salary } = jobFilterSchema.parse(values);
+  const { q, type, max_s, min_s } = jobFilterSchema.parse(values);
   const searchParams = new URLSearchParams();
   if (q) searchParams.append("q", q.trim());
   if (type) searchParams.append("type", type);
-  if (salary) searchParams.append("salary", salary.toString());
+  if (max_s) searchParams.append("max_s", max_s.toString());
+  if (min_s) searchParams.append("min_s", min_s.toString());
 
   redirect(`/?${searchParams.toString()}`);
 }
@@ -42,12 +43,21 @@ export default async function JobFilterSidebar({
             />
           </div>
           <div className="flex flex-col gap-2">
-            <Label htmlFor="salary">Salary</Label>
+            <Label htmlFor="min_s">Min Salary</Label>
             <Input
-              id="salary"
-              name="salary"
+              id="min_s"
+              name="min_s"
               placeholder="$5000"
-              defaultValue={defaultValues.salary}
+              defaultValue={defaultValues.min_s}
+            />
+          </div>
+          <div className="flex flex-col gap-2">
+            <Label htmlFor="max_s">Max Salary</Label>
+            <Input
+              id="max_s"
+              name="max_s"
+              placeholder="$15000"
+              defaultValue={defaultValues.max_s}
             />
           </div>
           <div className="flex flex-col gap-2">

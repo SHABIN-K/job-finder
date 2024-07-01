@@ -1,6 +1,6 @@
 import H1 from "@/components/ui/h1";
 import JobResults from "@/components/JobResults";
-import { getJobPosts } from "@/actions/getPosts";
+import { getAllPosts } from "@/actions/getPosts";
 import { JobFilterValues } from "@/lib/validation";
 import JobFilterSidebar from "@/components/JobFilterSidebar";
 
@@ -8,19 +8,21 @@ interface PageProps {
   searchParams: {
     q?: string;
     type?: string;
-    salary?: string;
+    max_s?: string;
+    min_s?: string;
   };
 }
 export default async function Home({
-  searchParams: { q, type, salary },
+  searchParams: { q, type, max_s, min_s },
 }: PageProps) {
   const filterValues: JobFilterValues = {
     q,
     type,
-    salary,
+    max_s,
+    min_s,
   };
 
-  const posts = await getJobPosts({ filterValues });
+  const posts = await getAllPosts({ filterValues });
 
   return (
     <main className="m-auto my-10 max-w-5xl space-y-10 px-3">

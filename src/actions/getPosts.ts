@@ -21,9 +21,18 @@ const JOB_FIELDS = gql`
   }
 `;
 
-export const GET_JOBS_QUERY = gql`
+export const GET_FILTERED_JOBS_QUERY = gql`
   query GET_POSTS($where: post_bool_exp!) {
     post(where: $where, order_by: { created_At: desc }) {
+      ...JobFields
+    }
+  }
+  ${JOB_FIELDS}
+`;
+
+export const GET_ALL_JOBS_QUERY = gql`
+  query GET_POSTS {
+    post(order_by: { created_At: desc }) {
       ...JobFields
     }
   }
@@ -79,12 +88,12 @@ export const getJob = async (slug: string) => {
   }
 };
 
-export async function getJobPosts({
+export async function getAllPosts({
   filterValues,
 }: {
   filterValues: JobFilterValues;
 }) {
-  const { q, type, salary } = filterValues;
+  const { q, type, min_s, max_s } = filterValues;
 
   const searchFilter = q
     ? {
@@ -97,22 +106,34 @@ export async function getJobPosts({
       }
     : {};
 
+  const minSalary = min_s ? parseInt(min_s, 10) : undefined;
+  const maxSalary = max_s ? parseInt(max_s, 10) : undefined;
+
   const where = {
     _and: [
       searchFilter,
       type ? { type: { _eq: type } } : { type: { _is_null: false } },
-      salary
-        ? { salary: { _lte: parseInt(salary) } }
+      minSalary
+        ? { salary: { _gte: minSalary } }
         : { salary: { _is_null: false } },
-    ],
+      maxSalary ? { salary: { _lte: maxSalary } } : undefined,
+    ].filter(Boolean),
   };
 
   try {
+    if (q || type || min_s || max_s) {
+      const { data } = await client.query({
+        query: GET_FILTERED_JOBS_QUERY,
+        variables: {
+          where,
+        },
+      });
+
+      return data.post || [];
+    }
+
     const { data } = await client.query({
-      query: GET_JOBS_QUERY,
-      variables: {
-        where,
-      },
+      query: GET_ALL_JOBS_QUERY,
     });
 
     return data.post || [];

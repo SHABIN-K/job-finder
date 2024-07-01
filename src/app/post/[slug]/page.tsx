@@ -12,7 +12,7 @@ export default async function Page({ params: { slug } }: PageProps) {
   const user = await currentUser();
   const job = await getJob(slug);
 
-  if (!job) {
+  if (job.length === 0) {
     notFound();
   }
 

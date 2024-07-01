@@ -11,7 +11,7 @@ import { createJobSchema } from "@/lib/validation";
 import { FormDataValues } from "@/types";
 
 const UPDATE_POST_MUTATION = gql`
-  mutation UPDATE_POST($id: ID!, $input: UpdateJobInput!) {
+  mutation UPDATE_POST($id: Int!, $input: post_set_input!) {
     update_post_by_pk(pk_columns: { id: $id }, _set: $input) {
       slug
       title
@@ -62,10 +62,16 @@ export async function editPost(formData: FormData, jobId?: string) {
   };
 
   try {
-    await client.mutate({
+    const { data, errors } = await client.mutate({
       mutation: UPDATE_POST_MUTATION,
-      variables: { id: jobId, updatePostInput },
+      variables: { id: jobId, input: updatePostInput },
     });
+
+    if (errors) {
+      console.error("GraphQL errors:", errors);
+    } else {
+      console.log("Update successful:", data);
+    }
   } catch (error) {
     console.error("Failed to update job:", error);
   } finally {

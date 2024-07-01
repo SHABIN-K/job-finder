@@ -66,10 +66,11 @@ export async function createJobPosting(formData: FormData) {
   };
 
   try {
-    await client.mutate({
+    const { data } = await client.mutate({
       mutation: CREATE_POST_MUTATION,
       variables: { object: jobPostingInput },
     });
+    console.log("created succesfully", data);
   } catch (error) {
     console.error("Failed to create job posting:", error);
   } finally {
