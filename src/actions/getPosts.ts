@@ -86,8 +86,6 @@ export async function getJobPosts({
 }) {
   const { q, type, salary } = filterValues;
 
-  const searchWords = q?.split(" ").filter((word) => word.length > 0);
-
   const searchFilter = q
     ? {
         _or: [

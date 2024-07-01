@@ -1,31 +1,28 @@
-import Link from "next/link";
+"use client";
 
+import Link from "next/link";
+import { Loader2 } from "lucide-react";
+import { useEffect, useState } from "react";
+
+import { PostProps } from "@/types";
 import JobListItem from "./JobListItem";
-import { JobFilterValues } from "@/lib/validation";
-import { getJobPosts, getUserPosts } from "@/actions/getPosts";
 
 interface JobResultsProps {
-  filterValues?: JobFilterValues;
-  user_Id?: string;
+  data: PostProps;
 }
 
-export default async function JobResults({
-  filterValues = {},
-  user_Id,
-}: JobResultsProps) {
-  let jobs: any[] = [];
-
-  if (user_Id) {
-    jobs = await getUserPosts({ user_Id });
-  } else {
-    jobs = await getJobPosts({ filterValues });
-  }
+export default function JobResults({ data }: JobResultsProps) {
+  const [jobs, setJobs] = useState<PostProps>();
+  useEffect(() => {
+    setJobs(data);
+  }, [data, jobs]);
 
   if (!Array.isArray(jobs)) {
-    console.error("Unexpected response format for jobs:", jobs);
     return (
       <p className="m-auto text-center">
-        Error loading jobs. Please try again later.
+        <span className="flex items-center justify-center gap-1">
+          <Loader2 size={16} className="animate-spin" />
+        </span>
       </p>
     );
   }

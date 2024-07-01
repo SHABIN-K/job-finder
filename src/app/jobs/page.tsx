@@ -1,9 +1,11 @@
 import JobResults from "@/components/JobResults";
+import { getUserPosts } from "@/actions/getPosts";
 
 import { currentUser } from "@clerk/nextjs/server";
 
 export default async function Page() {
   const user = await currentUser();
+  const userPosts = await getUserPosts({ user_Id: user?.id as string });
 
   return (
     <main className="m-auto my-10 max-w-5xl space-y-10 px-3">
@@ -11,7 +13,7 @@ export default async function Page() {
         <h1 className="text-xl font-extrabold">Manage Your Jobs</h1>
       </div>
       <section className="flex flex-col gap-4 md:flex-row">
-        <JobResults user_Id={user?.id} />
+        <JobResults data={userPosts} />
       </section>
     </main>
   );
