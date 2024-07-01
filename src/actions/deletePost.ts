@@ -1,3 +1,5 @@
+"use server";
+
 import client from "@/config/api";
 
 import { gql } from "@apollo/client";
@@ -12,13 +14,14 @@ const DELETE_JOB_MUTATION = gql`
 
 export async function deletePost(id: number) {
   try {
+    console.log("hello world ", id);
     const { data } = await client.mutate({
       mutation: DELETE_JOB_MUTATION,
       variables: { id },
     });
     console.log(data);
     if (data.delete_post.affected_rows > 0) {
-      console.log("Job deleted successfully",data);
+      console.log("Job deleted successfully", data);
     } else {
       console.error("Failed to delete the job");
     }

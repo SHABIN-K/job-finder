@@ -32,7 +32,7 @@ export const GET_FILTERED_JOBS_QUERY = gql`
 
 export const GET_ALL_JOBS_QUERY = gql`
   query GET_POSTS {
-    post(order_by: { created_At: desc }) {
+    post(order_by: { updated_At: desc }) {
       ...JobFields
     }
   }
@@ -51,8 +51,8 @@ export const GET_JOB_QUERY = gql`
 export const GET_USER_JOBS_QUERY = gql`
   query GET_USER_POSTS($user_Id: String!) {
     post(
-      where: { user_id: { _eq: $user_Id } }
-      order_by: { created_At: desc }
+      where: { user_id: { _eq: $user_Id } },
+      order_by: { updated_At: desc }
     ) {
       ...JobFields
     }
